@@ -44,11 +44,10 @@ export class AppComponent {
 
 
   GetAllUsers(){
-    this.service.GetAllUsers()
-    // .subscribe((data)=>{
-    //   this.displayedData =data['data']
-    //   console.log(data['data'])
-    // })
+    this.service.GetAllUsers().subscribe((data)=>{
+      this.displayedData =data['data']
+      console.log(data['data'])
+    })
   }
 
   GetOneUser(id:number){

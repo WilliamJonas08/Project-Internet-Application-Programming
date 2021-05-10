@@ -13,10 +13,7 @@ export class HttpService {
   constructor(private http: HttpClient,) { }
 
   GetAllUsers(){
-    return this.http.get(`${this.API_url}`).subscribe(()=>{
-      debugger
-      console.log("ici")
-    })
+    return this.http.get(`${this.API_url}`)
   }
 
   GetOneUser(id:number){
