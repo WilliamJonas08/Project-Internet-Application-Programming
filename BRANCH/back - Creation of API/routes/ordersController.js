@@ -1,9 +1,10 @@
 const express = require('express')  //EXPRESS creates a local server
 const router = express.Router()
 const repositoryFcts = require('../repository');
-const http =  require ("http")
 
-const HQApiUrl =  "http://localhost:3000/api/hq/queue"  //TODO : changer n localhost
+const axios = require('axios')
+
+const HQApiUrl =  "http://localhost:5000/api/headquarter/orders/queue" //  + /queue  //TODO : changer n localhost
 
 //API METHODS
 
@@ -40,7 +41,6 @@ router.get(`/:id`,(req,res)=> {
 //POST api/branch1/orders
 router.post(`/`,(req,res)=> {
 
-    //TODO : tests avant envoit en HQ
     const  order = req.body
     if (!repositoryFcts.fitsOrderInterface(order).isOrder){ //if order from req doesn't fit with order Model
         const err = repositoryFcts.fitsOrderInterface(order).message
@@ -48,26 +48,33 @@ router.post(`/`,(req,res)=> {
         return res.status(400).json({ error: err})
     }
     else { //if order from req fits with order Model
-        //http.post(`${HQApiUrl}`,order).subscribe((resFromHQ)=>{ //Sending the order to the HQ 
-            if (true){ // resFromHQ && resFromHQ ===order If order successfully added in the HQ db
-                repositoryFcts.addOrder(order).then((addedOrder)=>{  // Adding the order in our local database (because added/accepted by the HQ in their db)
+        axios.post(`${HQApiUrl}`,order).then(resFromHQ => { //Sending the order to the HQ 
 
+            if (resFromHQ['data'].data && JSON.stringify(resFromHQ['data'].data /*order added in HQ db*/) === JSON.stringify(order)){ // If order successfully added in the HQ db //TODO : best condition ?                repositoryFcts.addOrder(order).then((addedOrder)=>{  // Adding the order in our local database (because added/accepted by the HQ in their db)
+                repositoryFcts.addOrder(order).then((addedOrder)=>{  // Adding the order in our local database (because added/accepted by the HQ in their db)    
                     //Success when adding order in local db
                     return res.status(201).json({
                         data : addedOrder
                     })
                 })
-                .catch(err => { //Failure when adding order in local db
+                .catch(err => { //Failure when adding order in LOCAL db
                     console.log(err)
                     return res.status(400).json({ error: err}) // bad request  //res.sendStatus(405) for not allowed
                 })
+
             }
+            //TODO USEFUL  ??
             else { //Problem when adding order in HQ db
-                //TODO : voir si autre manière de catcher l'erreur directement de la réponse de l'API HQ
+                //The problem should be handled by the next catch (if res = error or if order added in HQ doesn't correspond to the one going to be added in local db)
                 console.log("Problem when sending the order to the HeadQuarter")
                 return res.status(400).json({ error: "Problem when sending the order to the HeadQuarter"})
             }
-        //})
+
+        })
+        .catch(err => { //Failure when adding order in HQ db
+            console.log(err)
+            return res.status(400).json({ error: err}) // bad request  //res.sendStatus(405) for not allowed
+        })
     }
 })
 
@@ -85,10 +92,26 @@ router.put(`/:id`,(req,res)=> {
 })
 
 //DELETE api/branch1/orders/:id
-router.delete(`/:id`,(req,res)=> {
+// router.delete(`/:id`,(req,res)=> {
+//     repositoryFcts.deleteOrder(req).then((deletedOrder)=>{
+        
+//         //Success
+//         return res.sendStatus(204) // No Content (status 200 if the webpage have to be refreshed after the successful request)
+//     })
+//     .catch(err => {//Failure
+//         console.log(err)
+//         return res.status(400).json({ error: err})// bad request  //res.sendStatus(405) for not allowed
+//     })
+// })
+
+
+//POST api/headquarter/orders/queue
+//RECEIVE DELIVERY (of orders) FROM HQ (we have to delete the order from local branch db)
+router.delete(`/orderdelivered/:id`,(req,res)=> {
     repositoryFcts.deleteOrder(req).then((deletedOrder)=>{
         
         //Success
+        //CAREFUL : WE ARE RETURNING A RESPONSE TO THE HQ API AND NOT BRANCH CLIENT
         return res.sendStatus(204) // No Content (status 200 if the webpage have to be refreshed after the successful request)
     })
     .catch(err => {//Failure
@@ -98,54 +121,36 @@ router.delete(`/:id`,(req,res)=> {
 })
 
 
-// //REQUEST FOR HEAD QUARTERS
-// //do we have to send 
 
-// //POST api/branch1/toheadquarter
-// router.post(`/`,(req,res)=> {
-//     repositoryFcts.deleteOrder(req).then((order)=>{
-        
-//         //Success
-//         //res.sendStatus(204) // No Content (status 200 if the webpage have to be refreshed after the successful request)
-//         return res.status(204).json({
-//             data:order
+// TEST REQUEST FOR HEAD QUARTERS
+// router.post(`/queue`,(req,res)=> {
+//     axios.post(`${HQApiUrl}`,req.body ).then(resFromHQ => {
+//         console.log(JSON.stringify(resFromHQ['data'].data) === JSON.stringify(req.body) )
+//         res.json({
+//             data:resFromHQ['data'].data
 //         })
 //     })
-//     .catch(err => {//Failure
-//         console.log(err)
-//         return res.status(400).json({ error: err})// bad request 
-//         //res.sendStatus(405) for not allowed
+//     .catch(error => {
+//         console.error(error)
+//         return res.status(400).json({ error: error})
 //     })
 // })
+
 
 module.exports = router
 
 
-//TODO
-//http request to HQ + Local post method inside it's callback
-//que  doivent retourner des requetes POST et DELETE ? changer ces méthodes plus le retour du HQ aux branches
-
-
-
-//Advices branch side
 
 //Post
 //Post on HQ db and then call another http req to post the order on local db
 
 //Delete:
 //Only used after a callback from the headquarter (=when the delivery is received)
+//The  HQ deletes the order in it's own db and then the order is posted in the branch db in a queue collection as an order waiting to be deleted
 
 //Put:
-// When will we use it 
+// When will we use it ?
 
 
 //NICE RESSOURCES
 //POST req + req authorization token (inside header): https://www.youtube.com/watch?v=1cjdlfB11Ss
-
-//{
-//     "id":10,
-//     status:1,
-//     origin : postman,
-//     prodType : "chair",
-//     quantity : 8,
-// }
