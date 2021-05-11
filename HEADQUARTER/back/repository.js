@@ -3,21 +3,21 @@ const faker = require('faker'); //FAKER : npm package used to generate fake data
 //FAKE DATA BASE
 
 //ORDER {id, status, origin, prodType, quantity} + date ?
-let  orders =[]
-productType=["chair","table","pillow"]//TODO import productsTypes array from Firebase
-minProductIndex = 0
-maxProductIndex=2
-minQuantity= 1
-maxQuantity=100
-for(let i=0;i<10;i++){
-    orders.push({
-        id: i,
-        status:1, // status depending of the state of the order
-        origin:"branch1",
-        productType:productType[Math.floor(Math.random() * (maxProductIndex - minProductIndex + 1)) + minProductIndex],
-        quantity:Math.floor(Math.random() * (maxQuantity - minQuantity + 1)) + minQuantity,
-    })
-}
+let  orders =[] //empty at the beginning
+// productType=["chair","table","pillow"]//TODO import productsTypes array from Firebase
+// minProductIndex = 0
+// maxProductIndex=2
+// minQuantity= 1
+// maxQuantity=100
+// for(let i=0;i<1;i++){
+//     orders.push({
+//         id: i,
+//         status:1, // status depending of the state of the order
+//         origin:"branch1",
+//         productType:productType[Math.floor(Math.random() * (maxProductIndex - minProductIndex + 1)) + minProductIndex],
+//         quantity:Math.floor(Math.random() * (maxQuantity - minQuantity + 1)) + minQuantity,
+//     })
+// }
 
 
 //REPOSITORY QUERIES
@@ -49,7 +49,6 @@ const getOrderById = function(req){
         //////////////////////
         // INSERT DB REQUEST /
         //////////////////////
-
         const order = orders.find(order => order.id== id)
 
         if (!order){
@@ -87,7 +86,7 @@ const addOrder = function(order){
             // }
 
         }
-      })
+    })
 }
 
 const modifyOneOrder = function(req){
