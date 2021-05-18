@@ -122,6 +122,7 @@ const modifyOneOrder = function(req){
       })
 }
 
+//Deleting order from the Production list + Adding it in the general db
 const deleteOrder = function(req){
     let id = req.params.id //not -1
     return new Promise(function(resolve, reject) {
@@ -204,6 +205,4 @@ function fitsOrderInterface(obj){ // {isOrder: ItFitsInterface , message}
 }
 
 //TODO
-// Add id inside Order Model ? So we won't recognize and order due to it's position inside the db list but according to it's id
 // CHANGE reject/resolve conditions according to db request answer
-//TEST fitsOrderInterace typeof conditions

@@ -72,7 +72,7 @@ const addOrder = function(order){
             reject("Order model is not correct : "+fitsOrderInterface(order).message)
         }
 
-        //If the order in the request body has the good shape/fits the interface
+        //If the order in the request body has the good shape/fits the Order interface
         else { //(fitsOrderInterface(order).isOrder)
 
             //POST order in db
