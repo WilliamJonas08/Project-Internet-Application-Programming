@@ -3,6 +3,7 @@ import { HttpService } from './service/http-service.service';
 
 export class Order {
   id: number 
+  origin:string
   productType: string
   quantity: number
 }
@@ -67,12 +68,14 @@ export class AppComponent {
   }
 
   AddOneOrder(product_type:string,quantity:number){
-    const order : Order ={id:0, productType : product_type,quantity: quantity}
+    const order : Order ={id:0, origin:"branch1", productType : product_type,quantity: quantity}
     this.service.AddOneOrder(order).subscribe((data)=>{
-      this.displayedData = [data['data']] 
+      this.displayedData = [data['data']]
+      console.log("DDATA",this.displayedData)
     })
   }
 
+  //NOT AVAILABLE IN BRANCH
   DeleteOneOrder(id_order:number){
     this.service.DeleteOneOrder(id_order).subscribe((data:{data:string})=>{
       const message:string=data['data']
@@ -81,11 +84,12 @@ export class AppComponent {
     })
   }
  
-  
+  //NOT AVAILABLE IN BRANCH
   ModifyOneOrder(id_order:number, product_type:string,quantity:number){
-    const order : Order ={id : id_order, productType: product_type,quantity}
+    const order : Order ={id : id_order, origin:"branch1", productType: product_type,quantity}
     this.service.ModifyOneOrder(id_order, order).subscribe((data)=>{
-      this.displayedData = [data['data']] 
+      //Not sending back data from api
+      //this.displayedData = [data['data']] 
     })
   }
 

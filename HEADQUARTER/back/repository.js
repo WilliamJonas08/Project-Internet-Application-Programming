@@ -62,7 +62,6 @@ const getOrderById = function(req){
 };
 
 const addOrder = function(order){
-    //const order = req.body
     return new Promise(function(resolve, reject) {
 
         //Hopefully it will be useless to check the object type here because i already check the order type before being sent to the HQ db
@@ -89,9 +88,8 @@ const addOrder = function(order){
     })
 }
 
-const modifyOneOrder = function(req){
-    const id = req.params.id //not -1
-    const order = req.body
+const modifyOneOrder = function(id, order){
+
     return new Promise(function(resolve, reject) {
 
         //Managing errors

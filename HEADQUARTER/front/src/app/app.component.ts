@@ -62,26 +62,30 @@ export class AppComponent {
     })
   }
 
+  //NOT AVAILABLE IN HQ
   AddOneOrder(product_type:string,quantity:number){
     const order : Order={id: 0, productType: product_type, quantity}
     this.service.AddOneOrder(order).subscribe((data)=>{
-      this.displayedData = [data['data']] 
+     //Not sending back data from api
+     //this.displayedData = [data['data']] 
     })
   }
 
   DeleteOneOrder(id_order:number){
     this.service.DeleteOneOrder(id_order).subscribe((data:{data:string})=>{
-      const message:string=data['data']
-      const noquantity:number= 0
+      //Not sending back data from api
+      //const message:string=data['data']
+      //const noquantity:number= 0
     //  this.displayedData = [{product_type: message, quantity:noquantity}]
     })
   }
  
-  
+  //NOT AVAILABLE IN HQ
   ModifyOneOrder(id_order:number, product_type:string,quantity:number){
     const order : Order ={id: 0, productType: product_type,quantity}
     this.service.ModifyOneOrder(id_order, order).subscribe((data)=>{
-      this.displayedData = [data['data']] 
+      //Not sending back data from api
+      //this.displayedData = [data['data']] 
     })
   }
 

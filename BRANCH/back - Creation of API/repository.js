@@ -66,6 +66,14 @@ const addOrder = function(order){
     //const order = req.body
     return new Promise(function(resolve, reject) {
 
+        //REQUEST TO GET THE SMALLER NEGATIVE ID (FROM THE ORDERS WAITING TO BE SYNCHRONIZED)
+        //////////////////////
+        // INSERT DB REQUEST /      Get  request to get all the orders
+        //////////////////////      I suppose they are in the shape of a list
+
+        //TEMPORARY BEFORE AUTOMATIC GENERATION OF NEGATIVE ID
+        order = {...order, id:orders.length}
+
         //Hopefully it will be useless to check the object type here because i already check the order type before being sent to the HQ db
         //Managing errors
         if (!fitsOrderInterface(order).isOrder){
@@ -79,6 +87,7 @@ const addOrder = function(order){
             //////////////////////
             // INSERT DB REQUEST /
             //////////////////////
+
             orders.push(order)
 
             //TODO : add conditions
@@ -90,9 +99,7 @@ const addOrder = function(order){
       })
 }
 
-const modifyOneOrder = function(req){
-    const id = req.params.id //not -1
-    const order = req.body
+const modifyOneOrder = function(id,order){
     return new Promise(function(resolve, reject) {
 
         //Managing errors
@@ -123,8 +130,7 @@ const modifyOneOrder = function(req){
       })
 }
 
-const deleteOrder = function(req){
-    let id = req.params.id //not -1
+const deleteOrder = function(id){
     return new Promise(function(resolve, reject) {
 
         //DELETE order in db

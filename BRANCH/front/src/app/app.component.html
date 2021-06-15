@@ -85,16 +85,20 @@
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
     </a>
   
-<!--BRANCH can't deleter order -->
-    <!--a class="card" rel="noopener" (click)="ShowForm(7)">    
+  <!--BRANCH can't deleter order -->
+    <!--
+      <a class="card" rel="noopener" (click)="ShowForm(7)">    
       <span>Delete one order (DELETE)</span>
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>    
-    </a-->
+    </a>
+    -->
 
+    <!--
     <a class="card" rel="noopener" (click)="ShowForm(8)">  
       <span>Modify one order (PUT)</span>
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>    
     </a>
+    -->
 
   </div>
 
@@ -113,7 +117,7 @@
 
     <h2>Information required</h2>
       <input class="card" type="text" placeholder="Product_type" [(ngModel)]="product_type">
-      <input class="card" type="text" placeholder="Quantity" [(ngModel)]="quantity">
+      <input class="card" type="number" placeholder="Quantity" [(ngModel)]="quantity">
     <div class="card-container">
      <br><button class="card" (click)="AddOneOrder(product_type, quantity)">Send POST Request</button>
     </div>
@@ -134,7 +138,7 @@
     <h2>Information required</h2>
     <input class="card" type="number"  placeholder="Id_order" [(ngModel)]="id_order">
     <input class="card" type="text" placeholder="Product type " [(ngModel)]="product_type">
-    <input class="card" type="text" placeholder="Quantity" [(ngModel)]="quantity">
+    <input class="card" type="number" placeholder="Quantity" [(ngModel)]="quantity">
     <div class="card-container">
       <br><button class="card" style="text-align: center;" (click)="ModifyOneOrder(id_order,product_type,quantity)">Send PUT Request</button>
     </div>
