@@ -69,7 +69,7 @@
   
   <div class="card-container">
     <a class="card" rel="noopener" (click)="GetAllOrders()">
-      <span>Get all users (GET)</span>
+      <span>Get all orders (GET)</span>
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>    
     </a>
 
@@ -80,21 +80,25 @@
 
 
     <!-- Headquarters don't add orders -->
-    <!--a class="card" rel="noopener" (click)="ShowForm(6)">
+    <!--
+      <a class="card" rel="noopener" (click)="ShowForm(6)">
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24px" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
       <span> Add one order (POST) </span>
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-    </a-->
+    </a>
+    -->
   
     <a class="card" rel="noopener" (click)="ShowForm(7)">    
-      <span>Delete one order (DELETE)</span>
+      <span>Deliver order (DELETE)</span>
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>    
     </a>
 
+    <!--
     <a class="card" rel="noopener" (click)="ShowForm(8)">  
       <span>Modify one order (PUT)</span>
       <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>    
     </a>
+    -->
 
   </div>
 
@@ -135,7 +139,7 @@
     <h2>Information required</h2>
     <input class="card" type="number"  placeholder="Id_order" [(ngModel)]="id_order">
     <input class="card" type="text" placeholder="Product type " [(ngModel)]="product_type">
-    <input class="card" type="text" placeholder="Quantity" [(ngModel)]="quantity">
+    <input class="card" type="number" placeholder="Quantity" [(ngModel)]="quantity">
     <div class="card-container">
       <br><button class="card" style="text-align: center;" (click)="ModifyOneOrder(id_order,product_type,quantity)">Send PUT Request</button>
     </div>

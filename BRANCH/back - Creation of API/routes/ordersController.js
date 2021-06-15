@@ -42,14 +42,21 @@ router.get(`/:id`,(req,res)=> {
 
 //POST api/branch1/orders
 router.post(`/`,(req,res)=> {
-    const  order = req.body
-    repositoryFcts.addOrder(order).then((addedOrder)=>{  // Adding the order in our local database   
+    let  order = req.body
+    order = { ...order, status:1}
+    repositoryFcts.addOrder(order).then((addedOrder)=>{  // Adding the order in our local database 
+
+        //SYNC : Adding the order with a negative id
+        //We should store it's negative id in a local variable
         
+        //TODO addedOrder != order because we added a fake id for now
         //Success when adding order in LOCAL branch db
-        axios.post(`${HQApiUrl}`,order).then(resFromHQ => { //Send the order to HQ
+        axios.post(`${HQApiUrl}`,addedOrder).then(resFromHQ => { //Send the order to HQ
+            //SYNC : Adding the order in the HQ db and generating it's future true id according to the total length of all previous created orders
             
+            //SYNC : TODO We should modify again the id of this order if has been added in the HQ db (it means we got it here)
             return res.status(201).json({
-                data : resFromHQ //TODO = addedOrder ?
+                data : resFromHQ['data']["data"] //TODO = addedOrder ?
             })
         })
         .catch(err => { //Failure when adding/sending order in HQ db
@@ -74,7 +81,11 @@ router.post(`/`,(req,res)=> {
 //Won't be used by HQ client
 //PUT api/branch1/orders/:id
 router.put(`/:id`,(req,res)=> {
-    repositoryFcts.modifyOneOrder(req).then((modifiedOrder)=>{
+    const id = req.params.id //not -1
+    let order = req.body
+    order = { ...order, status:1}
+
+    repositoryFcts.modifyOneOrder(id, order).then((modifiedOrder)=>{
 
         //Success
         return res.sendStatus(204) //Not content
@@ -88,7 +99,8 @@ router.put(`/:id`,(req,res)=> {
 //DELETE api/branch1/orders/orderdelivered/
 //RECEIVE DELIVERY (of orders) FROM HQ (we have to delete the order from local branch db)
 router.delete(`/orderdelivered/:id`,(req,res)=> {
-    repositoryFcts.deleteOrder(req).then((deletedOrder)=>{
+    let id = req.params.id //not -1
+    repositoryFcts.deleteOrder(id).then((deletedOrder)=>{
         
         //Success
         //CAREFUL : WE ARE RETURNING A RESPONSE TO THE HQ API AND NOT BRANCH CLIENT

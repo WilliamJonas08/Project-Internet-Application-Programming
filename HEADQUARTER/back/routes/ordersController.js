@@ -60,24 +60,33 @@ router.post(`/queue`,(req,res)=> {
 
 //Won't be used by HQ client
 //PUT api/headquarter/orders/:id
-router.put(`/:id`,(req,res)=> {
-    repositoryFcts.modifyOneOrder(req).then((modifiedOrder)=>{
 
-        //Success
-        return res.sendStatus(204) //Not content
-    })
-    .catch(err => {//Failure
-        console.log(err)
-        return res.status(400).json({ error: err}) // bad request  //res.sendStatus(405) for not allowed
-    })
-})
+// router.put(`/:id`,(req,res)=> {
+//     const id = req.params.id //not -1
+//     let order = req.body
+//     order = { ...order, status:1}
+//     repositoryFcts.modifyOneOrder(id, order).then((modifiedOrder)=>{
+
+//         //Success
+//         return res.sendStatus(204) //Not content
+//     })
+//     .catch(err => {//Failure
+//         console.log(err)
+//         return res.status(400).json({ error: err}) // bad request  //res.sendStatus(405) for not allowed
+//     })
+// })
 
 //DELETE api/headquarter/orders/:id
 router.delete(`/:id`,(req,res)=> {
     repositoryFcts.deleteOrder(req).then((deletedOrder)=>{ 
+    //YVAN : change status to "Todelete"
         
-        axios.delete(`${Branch1ApiUrl}/orderdelivered/${req.params.id}`).then(resFromBranch => { //Sending the deletedo$Order to the Branch 
+        axios.delete(`${Branch1ApiUrl}/orderdelivered/${req.params.id}`).then(resFromBranch => { //Sending the deletedOrder to the Branch 
+            
             //Success
+
+            //YVAN : Really delete the order in the queue db (and mark it as delete in the global db of the HQ)
+
             return res.sendStatus(204) // No Content (status 200 if the webpage have to be refreshed after the successful request)
         })
         .catch(err => { //Failure when sending deletedOrder to branch API
