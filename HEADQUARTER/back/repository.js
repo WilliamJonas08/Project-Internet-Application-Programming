@@ -4,20 +4,20 @@ const faker = require('faker'); //FAKER : npm package used to generate fake data
 
 //ORDER {id, status, origin, prodType, quantity} + date ?
 let  orders =[] //empty at the beginning
-// productType=["chair","table","pillow"]//TODO import productsTypes array from Firebase
-// minProductIndex = 0
-// maxProductIndex=2
-// minQuantity= 1
-// maxQuantity=100
-// for(let i=0;i<1;i++){
-//     orders.push({
-//         id: i,
-//         status:1, // status depending of the state of the order
-//         origin:"branch1",
-//         productType:productType[Math.floor(Math.random() * (maxProductIndex - minProductIndex + 1)) + minProductIndex],
-//         quantity:Math.floor(Math.random() * (maxQuantity - minQuantity + 1)) + minQuantity,
-//     })
-// }
+productType=["chair","table","pillow"]//TODO import productsTypes array from Firebase
+minProductIndex = 0
+maxProductIndex=2
+minQuantity= 1
+maxQuantity=100
+for(let i=0;i<10;i++){
+    orders.push({
+        id: i,
+        status:1, // status depending of the state of the order
+        origin:"branch1",
+        productType:productType[Math.floor(Math.random() * (maxProductIndex - minProductIndex + 1)) + minProductIndex],
+        quantity:Math.floor(Math.random() * (maxQuantity - minQuantity + 1)) + minQuantity,
+    })
+}
 
 
 //REPOSITORY QUERIES
