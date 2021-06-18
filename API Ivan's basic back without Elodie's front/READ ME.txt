@@ -1,0 +1,10 @@
+Server
+Run -> nom start
+
+Comment peut on rendre l’API disponible à distance sans avoir a laisser mon ordi allumé 
+
+Client
+Run -> ng serve
+
+
+SoapUI / LoadUI : Performance Testing
